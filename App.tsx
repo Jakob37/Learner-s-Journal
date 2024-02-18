@@ -9,13 +9,25 @@ import {
   createStackNavigator,
 } from '@react-navigation/stack';
 import React from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, FlatList, Text, View } from 'react-native';
 
 const ds = {
   colors: {
     primary: 'darkred',
   },
 };
+
+type Card = {
+  id: Number;
+  title: String;
+};
+
+const dummyCards: Card[] = [
+  { id: 1, title: 'Card A' },
+  { id: 2, title: 'Card B' },
+  { id: 3, title: 'Card C' },
+  { id: 4, title: 'Card D' },
+];
 
 const MyTheme = {
   ...DefaultTheme,
@@ -58,6 +70,14 @@ function Main({ navigation }: Props) {
         onPress={() => {
           navigation.navigate('Test');
         }}></Button>
+      <FlatList
+        data={dummyCards}
+        keyExtractor={item => String(item.id)}
+        renderItem={({ item }) => (
+          <View>
+            <Text>{item.title}</Text>
+          </View>
+        )}></FlatList>
     </View>
   );
 }
