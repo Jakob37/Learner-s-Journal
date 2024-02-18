@@ -3,6 +3,7 @@ import {
   DefaultTheme,
   NavigationContainer,
   RouteProp,
+  useRoute,
 } from '@react-navigation/native';
 import {
   StackNavigationProp,
@@ -18,15 +19,16 @@ const ds = {
 };
 
 type Card = {
-  id: Number;
-  title: String;
+  id: number;
+  title: string;
+  body: string;
 };
 
 const dummyCards: Card[] = [
-  { id: 1, title: 'Card A' },
-  { id: 2, title: 'Card B' },
-  { id: 3, title: 'Card C' },
-  { id: 4, title: 'Card D' },
+  { id: 1, title: 'Card A', body: 'My body is a cage' },
+  { id: 2, title: 'Card B', body: 'My body is a cage' },
+  { id: 3, title: 'Card C', body: 'My body is a cage' },
+  { id: 4, title: 'Card D', body: 'My body is a cage' },
 ];
 
 const MyTheme = {
@@ -42,7 +44,7 @@ const MyTheme = {
 type RootStackParamList = {
   Home: undefined; // no params expected to be passed to route named Home
   Main: { itemId: number; otherParam: string }; // Details expects an object with itemId and otherParam
-  Test: undefined;
+  JournalEntry: { card: Card };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -54,10 +56,14 @@ type Props = {
 
 // const Stack = createStackNavigator();
 
-function Test() {
+function JournalEntry() {
+  const route = useRoute<RouteProp<RootStackParamList, 'JournalEntry'>>();
+  const { card } = route.params;
+
   return (
     <View>
-      <Text>Test</Text>
+      <Text>{card.title}</Text>
+      <Text>{card.body}</Text>
     </View>
   );
 }
@@ -65,17 +71,17 @@ function Test() {
 function Main({ navigation }: Props) {
   return (
     <View>
-      <Button
-        title="Go to test"
-        onPress={() => {
-          navigation.navigate('Test');
-        }}></Button>
       <FlatList
         data={dummyCards}
         keyExtractor={item => String(item.id)}
         renderItem={({ item }) => (
           <View>
             <Text>{item.title}</Text>
+            <Button
+              title={item.title}
+              onPress={() => {
+                navigation.navigate('JournalEntry', { card: item });
+              }}></Button>
           </View>
         )}></FlatList>
     </View>
@@ -84,11 +90,12 @@ function Main({ navigation }: Props) {
 
 function Navigation() {
   return (
-    <Stack.Navigator
-      initialRouteName="Main"
-      screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Main" component={Main}></Stack.Screen>
-      <Stack.Screen name="Test" component={Test}></Stack.Screen>
+    <Stack.Navigator initialRouteName="Main">
+      <Stack.Screen
+        name="Main"
+        component={Main}
+        options={{ headerShown: false }}></Stack.Screen>
+      <Stack.Screen name="JournalEntry" component={JournalEntry}></Stack.Screen>
     </Stack.Navigator>
   );
 }
