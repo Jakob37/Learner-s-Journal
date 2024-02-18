@@ -11,10 +11,24 @@ import {
 } from '@react-navigation/stack';
 import React from 'react';
 import { Button, FlatList, Text, View } from 'react-native';
+import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 
 const ds = {
   colors: {
     primary: 'darkred',
+  },
+  text: {
+    size: 30,
+  },
+  size: {
+    s: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: 'white',
+    fontSize: 20,
+    padding: 10,
+    margin: 10,
   },
 };
 
@@ -45,6 +59,7 @@ type RootStackParamList = {
   Home: undefined; // no params expected to be passed to route named Home
   Main: { itemId: number; otherParam: string }; // Details expects an object with itemId and otherParam
   JournalEntry: { card: Card };
+  NewJournalEntry: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -68,22 +83,53 @@ function JournalEntry() {
   );
 }
 
-function Main({ navigation }: Props) {
+function NewJournalEntry() {
   return (
     <View>
+      <TextInput placeholder="Title" style={ds.input}></TextInput>
+      <TextInput
+        placeholder="Body"
+        style={{
+          ...ds.input,
+          minHeight: 300,
+          textAlignVertical: 'top',
+        }}></TextInput>
+      <View style={{ margin: ds.size.s }}>
+        <Button title="Save" onPress={() => {}}></Button>
+      </View>
+    </View>
+  );
+}
+
+function Main({ navigation }: Props) {
+  return (
+    <View style={{ height: '100%' }}>
       <FlatList
         data={dummyCards}
         keyExtractor={item => String(item.id)}
         renderItem={({ item }) => (
-          <View>
-            <Text>{item.title}</Text>
-            <Button
-              title={item.title}
+          <View style={{ paddingLeft: ds.size.s, paddingTop: ds.size.s }}>
+            <TouchableOpacity
               onPress={() => {
                 navigation.navigate('JournalEntry', { card: item });
-              }}></Button>
+              }}>
+              <Text style={{ fontSize: ds.text.size }}>{item.title}</Text>
+            </TouchableOpacity>
           </View>
         )}></FlatList>
+      <View
+        style={{
+          width: '33%',
+          position: 'absolute',
+          bottom: ds.size.s,
+          right: 0,
+        }}>
+        <Button
+          title="Add"
+          onPress={() => {
+            navigation.navigate('NewJournalEntry');
+          }}></Button>
+      </View>
     </View>
   );
 }
@@ -96,6 +142,9 @@ function Navigation() {
         component={Main}
         options={{ headerShown: false }}></Stack.Screen>
       <Stack.Screen name="JournalEntry" component={JournalEntry}></Stack.Screen>
+      <Stack.Screen
+        name="NewJournalEntry"
+        component={NewJournalEntry}></Stack.Screen>
     </Stack.Navigator>
   );
 }
