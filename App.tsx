@@ -117,8 +117,12 @@ function JournalEntry() {
 
   return (
     <View>
-      <Text>{card.title}</Text>
-      <Text>{card.body}</Text>
+      <Text style={{ fontSize: ds.text.size, padding: ds.size.s }}>
+        {card.title}
+      </Text>
+      <Text style={{ fontSize: ds.text.size, padding: ds.size.s }}>
+        {card.body}
+      </Text>
     </View>
   );
 }
