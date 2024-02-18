@@ -1,12 +1,19 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  DefaultTheme,
+  NavigationContainer,
+  RouteProp,
+} from '@react-navigation/native';
+import {
+  StackNavigationProp,
+  createStackNavigator,
+} from '@react-navigation/stack';
 import React from 'react';
 import { Button, Text, View } from 'react-native';
 
 const ds = {
   colors: {
-    primary: 'blue',
+    primary: 'darkred',
   },
 };
 
@@ -20,8 +27,20 @@ const MyTheme = {
   },
 };
 
-const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+type RootStackParamList = {
+  Home: undefined; // no params expected to be passed to route named Home
+  Main: { itemId: number; otherParam: string }; // Details expects an object with itemId and otherParam
+  Test: undefined;
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
+
+type Props = {
+  navigation: StackNavigationProp<RootStackParamList, 'Main'>;
+  route: RouteProp<RootStackParamList, 'Main'>;
+};
+
+// const Stack = createStackNavigator();
 
 function Test() {
   return (
@@ -31,19 +50,25 @@ function Test() {
   );
 }
 
-function Main() {
+function Main({ navigation }: Props) {
   return (
     <View>
-      <Text>Main</Text>
+      <Button
+        title="Go to test"
+        onPress={() => {
+          navigation.navigate('Test');
+        }}></Button>
     </View>
   );
 }
 
 function Navigation() {
   return (
-    <Stack.Navigator initialRouteName="main">
-      <Stack.Screen name="main" component={Main}></Stack.Screen>
-      <Stack.Screen name="test" component={Test}></Stack.Screen>
+    <Stack.Navigator
+      initialRouteName="Main"
+      screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Main" component={Main}></Stack.Screen>
+      <Stack.Screen name="Test" component={Test}></Stack.Screen>
     </Stack.Navigator>
   );
 }
