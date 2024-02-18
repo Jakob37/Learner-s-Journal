@@ -19,7 +19,8 @@ const ds = {
     secondary: '#0F4C75',
   },
   text: {
-    size: 30,
+    header: 30,
+    body: 20,
   },
   size: {
     s: 10,
@@ -72,10 +73,26 @@ type Card = {
 };
 
 const dummyCards: Card[] = [
-  { id: '1', title: 'Card A', body: 'My body is a cage' },
-  { id: '2', title: 'Card B', body: 'My body is a cage' },
-  { id: '3', title: 'Card C', body: 'My body is a cage' },
-  { id: '4', title: 'Card D', body: 'My body is a cage' },
+  {
+    id: '1',
+    title: 'Best color combinations',
+    body: 'Delve into the intricacies of new Chinese grammar, where structure meets fluidity. As the language evolves, so do its rules, adapting to contemporary usage and communication needs. Learn about the latest grammatical trends that simplify learning, making it more accessible to beginners and advanced learners alike, bridging traditional foundations with modern expressions.',
+  },
+  {
+    id: '2',
+    title: 'New Chinese grammar',
+    body: 'Delve into the intricacies of new Chinese grammar, where structure meets fluidity. As the language evolves, so do its rules, adapting to contemporary usage and communication needs. Learn about the latest grammatical trends that simplify learning, making it more accessible to beginners and advanced learners alike, bridging traditional foundations with modern expressions.',
+  },
+  {
+    id: '3',
+    title: 'African culture',
+    body: 'African culture is a tapestry of diversity, rich in tradition, art, and community spirit. From the rhythmic beats of the djembe to the intricate patterns of kente cloth, every element tells a story of heritage and identity. Explore the vast array of languages, customs, and cuisines that make up this vibrant continent, celebrating a legacy that continues to influence global culture.',
+  },
+  {
+    id: '4',
+    title: 'How to clean dishwasher',
+    body: 'Keeping your dishwasher clean ensures it runs efficiently and your dishes sparkle. Start by removing and rinsing the filter under running water. Monthly, run a hot cycle with a cup of white vinegar placed upright on the top rack to remove grease and odors. For stubborn stains, sprinkle baking soda on the bottom overnight before running a cycle. Regular maintenance keeps your machine in top condition, providing spotless results every time.',
+  },
 ];
 
 const MyTheme = {
@@ -117,10 +134,10 @@ function JournalEntry() {
 
   return (
     <View>
-      <Text style={{ fontSize: ds.text.size, padding: ds.size.s }}>
+      <Text style={{ fontSize: ds.text.header, padding: ds.size.s }}>
         {card.title}
       </Text>
-      <Text style={{ fontSize: ds.text.size, padding: ds.size.s }}>
+      <Text style={{ fontSize: ds.text.body, padding: ds.size.s }}>
         {card.body}
       </Text>
     </View>
@@ -183,7 +200,7 @@ function Main({ navigation }: NavigationPropsMain) {
               onPress={() => {
                 navigation.navigate('JournalEntry', { card: item });
               }}>
-              <Text style={{ fontSize: ds.text.size }}>{item.title}</Text>
+              <Text style={{ fontSize: ds.text.header }}>{item.title}</Text>
             </TouchableOpacity>
           </View>
         )}></FlatList>
